@@ -4,11 +4,11 @@
 <div
     class="container-fluid m-0 p1 min-vh-100 row justify-content-center align-items-center"
 >
-    <div class="col-12 container rounded-3 col-sm-10 p2 px-5 mx-5 text-white ">
+    <div class="col-12 container rounded-3 col-sm-10 p2 px-5 mx-5 text-white">
         <!-- navbar -->
-        <nav class="navbar navbar-expand-lg navbar-light mb-5 ">
+        <nav class="navbar navbar-expand-lg navbar-light mb-5">
             <div class="container-fluid">
-                <a class="navbar-brand text-white" href="#">logo</a>
+                <a class="navbar-brand text-white" href="#"><h3>Logo</h3> </a>
                 <button
                     class="navbar-toggler"
                     type="button"
@@ -24,7 +24,7 @@
                     class="collapse navbar-collapse"
                     id="navbarSupportedContent"
                 >
-                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0 ">
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                         <li class="nav-item">
                             <a
                                 class="nav-link active text-white"
@@ -34,10 +34,16 @@
                             >
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link active text-white" href="#">About</a>
+                            <a class="nav-link active text-white" href="#"
+                                >About</a
+                            >
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link active text-white" href="login.php">Login</a>
+                            <a
+                                class="nav-link active text-white"
+                                href="login.php"
+                                >Login</a
+                            >
                         </li>
                     </ul>
                     <!-- <form class="d-flex">
@@ -55,13 +61,12 @@
             </div>
         </nav>
         <div class="row">
-            <div class="col-12 col-lg-6 my-4
-              ">
+            <div class="col-12 col-lg-6 my-4">
                 <div class="text-white mb-3">
-                    <h1 >WHERE WOULD YOU </h1>
-                    <h1 >LIKE TO GO ?</h1>
+                    <h1>WHERE WOULD YOU</h1>
+                    <h1>LIKE TO GO ?</h1>
                 </div>
-                
+
                 <!-- btn -->
                 <!-- <button class="btn btn-danger col-4 my-3">One Way</button>
                 <button class="btn btn-danger col-4 my-3">Two way</button> -->
@@ -139,16 +144,14 @@
                             />
                         </div>
                     </div>
-                    <button class="btn btn-danger my-1">Search</button>
+                    <a href="search_index.php" class="btn btn-danger my-1"
+                        >Search</a
+                    >
                 </form>
             </div>
 
             <div class="col-12 col-lg-6 mb-2">
-                <img
-                    src="images/blue.gif"
-                    class="img-fluid rounded-5"
-                    alt=""
-                />
+                <img src="images/blue.gif" class="img-fluid rounded-5" alt="" />
             </div>
         </div>
     </div>
