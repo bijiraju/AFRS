@@ -460,7 +460,7 @@ if(isset($_POST['btn_delete'])){
                         <div class="col-12">
                         
                             <form action="" method="post">
-                                <button name= "bookings" class="btn col-12  my-2 btn-success">
+                                <button name= "bookings" type="submit" class="btn col-12  my-2 btn-success">
                                     SHOW BOOKING DETAIL
                                 </button>
 
@@ -472,8 +472,14 @@ if(isset($_POST['bookings'])){
             if ($booking= $stmt->fetch(PDO::FETCH_OBJ)) {
             echo 'booking';
         }
-        else{ echo "<div class='alert alert-danger'>No bookings</div>";
+        else{ 
+            
+            $_SESSION['status'] = "Danger";
+            $_SESSION['status_code'] = "Danger";
+            $_SESSION['message'] = "No bookings!"; 
         }
+}else{
+    
 }
 ?>
                             </form>
