@@ -1,17 +1,43 @@
+<?php require 'connection.php'; ?>
 <?php require 'header.php'; ?>
-
 <div
     class="container-fluid m-0 p1 row justify-content-center content-center align-items-center min-vh-100"
 >
-    <div class="px-0 col-sm-10 row justify-content-center">
+    <div class="px-0 col-sm-10 row  justify-content-center">
         <!-- div for plane image -->
-        <div class="px-0 col-12 col-lg-6 image-1 img-fluid text-center">
-            <img src="images/plane.jpg" class="img-fluid" alt="" />
+        <div class="px-0 col-12 col-lg-6 border border-secondary border-2 rounded-4 text-center">
+            <img src="images/plane 2.png" class="img-fluid rounded-4 " alt="" />
         </div>
         <!-- div for login -->
-        <div class="col-12 col-lg-4 bg-light">
-            <h1 class="my-5 text-center">SIGN IN</h1>
-            <form action="">
+        <div class="col-12 col-lg-4 rounded-4 border border-secondary border-2 rounded-4 p2">
+        <h3 class="my-4 text-center text-white ">Welcome to Purple Fly.com</h3>
+        <?php if (isset($_POST['log'])) 
+                 {  $email = $_POST['email'];
+                    $password =md5( $_POST['password']);
+                    // selecting data from database
+                    $sql = "SELECT * FROM registration WHERE EMAIL = :email";
+            $statement = $connection->prepare($sql);
+            $statement->execute([':email' => $email]); 
+            $user=$statement->fetch(PDO::FETCH_ASSOC); 
+            if ($user !== false)
+            { 
+            $a=$user['ROLE'] ;
+            $p =$user['PASSWORD']; 
+            if ($password == $p) 
+            {            
+            if($a=='USER'){ 
+            session_start(); $_SESSION["user"]=$email;
+            header("Location:homepage.php"); } 
+            else if($a=='ADMIN'){
+                session_start(); $_SESSION["user"]=$email;
+                header("Location:adminhome.php");
+            }
+        }
+            else{ echo "<div class='alert alert-danger'>Invalid password</div>
+            "; } } 
+            else { echo "<div class='alert alert-danger'>Invalid user</div>
+            "; } }?>
+            <form action="" method="post">
                 <div class="my-4">
                     <input
                         type="text"
@@ -30,40 +56,83 @@
                         name="password"
                     />
                 </div>
-                <div class="text-center">
-                    <a
-                        href="homepage.php"
-                        type="submit"
-                        name="login"
-                        class="btn btn-success mb-5"
-                    >
-                        Submit
-                    </a>
+                <div class="text-center my-4">
+                    <button type="submit" name="log" class="btn  btn-success">
+                        Sign in
+                    </button>
                 </div>
                 <div class="row">
                     <div class="col-6 text-start">
                         <button
                             type="button"
-                            class="border-0 text-decoration-underline"
+                            class="border-0 p2 text-white  text-decoration-underline"
                             data-bs-toggle="modal"
                             data-bs-target="#exampleModal"
                         >
-                            Forgotten password
+                            Forgot password
                         </button>
                     </div>
                     <div class="col-6 mb-5 text-center">
-                        <a href="signup.php" class="text-black">Sign Up</a>
+                        <a
+                            href="signup.php"
+                            class="text-white   text-decoration-underline"
+                            >Sign Up</a
+                        >
                     </div>
                 </div>
             </form>
         </div>
     </div>
 </div>
-
-<!-- Button trigger modal -->
-
-<!-- Modal -->
-
+<?php
+//Import PHPMailer classes into the global namespace
+//These must be at the top of your script, not inside a function
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
+//Load Composer's autoloader
+require 'vendor/autoload.php';
+//Create an instance; passing `true` enables exceptions
+$mail = new PHPMailer(true);
+$token = bin2hex(random_bytes(32));
+if(isset($_POST['password-reset-token']) && $_POST['email'])
+{
+    $email_address = $_POST['email'];
+    $query = $connection->prepare("UPDATE registration   SET TOKEN=:token WHERE EMAIL=:email");
+    $query->execute(array(':token' => $token, ':email' => $email_address));
+    $reset_url = "http://localhost/Group/AIRLINE/reset-password.php?token=" . $token;
+    try {
+        //Server settings
+        $mail->SMTPDebug = SMTP::DEBUG_SERVER;                      //Enable verbose debug output
+        $mail->isSMTP();                                            //Send using SMTP
+        $mail->Host       = 'smtp.gmail.com';                     //Set the SMTP server to send through
+        $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
+        $mail->Username   = 'arfsairline@gmail.com';                     //SMTP username
+        $mail->Password   = 'gaycnpamyrhohkbr';                               //SMTP password
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;            //Enable implicit TLS encryption
+        $mail->Port       = 465;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
+        //Recipients
+        $mail->setFrom('arfsairline@gmail.com', 'ARFS');
+        $mail->addAddress($email_address);     //Add a recipient
+        // $mail->addAddress('ellen@example.com');               //Name is optional
+        // $mail->addReplyTo('info@example.com', 'Information');
+        // $mail->addCC('cc@example.com');
+        // $mail->addBCC('bcc@example.com');
+        //Attachments
+        // $mail->addAttachment('/var/tmp/file.tar.gz');         //Add attachments
+        // $mail->addAttachment('/tmp/image.jpg', 'new.jpg');    //Optional name
+        //Content
+        $mail->isHTML(true);                                  //Set email format to HTML
+        $mail->Subject = 'password reset';
+        $mail->Body    = 'To reset your password, please click the following link:'.$reset_url;
+        $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
+        $mail->send();
+        echo '<script>alert("Message sent");</script>';
+    } catch (Exception $e) {
+        echo '<script>alert("Message not sent");</script>';
+    }
+}
+?>
 <!-- Modal -->
 <div
     class="modal fade"
@@ -87,22 +156,40 @@
             </div>
             <div class="modal-body">
                 <div class="modal-body border-0">
-                    <input
-                        class="form-control"
-                        placeholder="Enter your email"
-                    />
+                    <div class="container">
+                        <div class="card">
+                            
+                            <div class="card-body">
+                                <form action="" method="post">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1"
+                                            >Email address</label
+                                        >
+                                        <input
+                                            type="email"
+                                            name="email"
+                                            class="form-control"
+                                            id="email"
+                                            aria-describedby="emailHelp"
+                                        />
+                                        <small
+                                            id="emailHelp"
+                                            class="form-text text-muted"
+                                            >We'll never share your email with
+                                            anyone else.</small
+                                        >
+                                    </div>
+                                    <input
+                                        type="submit"
+                                        name="password-reset-token"
+                                        class="btn btn-primary"
+                                    />
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div class="modal-footer border-0">
-                <button
-                    type="button"
-                    class="btn btn-secondary"
-                    data-bs-dismiss="modal"
-                >
-                    Close
-                </button>
-                <button type="button" class="btn btn-success">Submit</button>
-            </div>
+            </div>          
         </div>
     </div>
 </div>

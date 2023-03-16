@@ -1,5 +1,16 @@
+<?php require 'connection.php'; ?>
 <?php require 'header.php'; ?>
 
+<?php session_start();
+if (!isset($_SESSION["user"])) {
+    header("location:login.php");
+}
+else 
+{
+$sql = 'SELECT AIRPORT_NAME FROM airport ';
+$statement = $connection->prepare($sql); 
+$statement->execute(); 
+$airports =$statement->fetchAll(PDO::FETCH_OBJ);}?>
 <!-- main div -->
 <div
     class="container-fluid m-0 p1 min-vh-100 row justify-content-center align-items-center"
@@ -7,8 +18,8 @@
     <div class="col-12 container rounded-3 col-sm-10 p2 px-5 mx-5 text-white">
         <!-- navbar -->
         <nav class="navbar navbar-expand-lg navbar-light mb-5">
-            <div class="container-fluid">
-                <a class="navbar-brand text-white" href="#"><h3>Logo</h3> </a>
+            <div class="container-fluid p-0">
+                <h4>Purple Fly.com</h4>
                 <button
                     class="navbar-toggler"
                     type="button"
@@ -41,22 +52,11 @@
                         <li class="nav-item">
                             <a
                                 class="nav-link active text-white"
-                                href="login.php"
-                                >Login</a
+                                href="logout.php"
+                                >Login/Signup</a
                             >
                         </li>
-                    </ul>
-                    <!-- <form class="d-flex">
-                        <input
-                            class="form-control me-2"
-                            type="search"
-                            placeholder="Search"
-                            aria-label="Search"
-                        />
-                        <button class="btn btn-danger" type="submit">
-                            Search
-                        </button>
-                    </form> -->
+                    </ul>                  
                 </div>
             </div>
         </nav>
@@ -65,65 +65,40 @@
                 <div class="text-white mb-3">
                     <h1>WHERE WOULD YOU</h1>
                     <h1>LIKE TO GO ?</h1>
+                </div>   
+                <div class="row container my-4">    
                 </div>
-
-                <!-- btn -->
-                <!-- <button class="btn btn-danger col-4 my-3">One Way</button>
-                <button class="btn btn-danger col-4 my-3">Two way</button> -->
-                <div class="row container my-4">
-                    <div class="form-check col-6">
-                        <input
-                            class="form-check-input"
-                            type="radio"
-                            name="flexRadioDefault"
-                            id="flexRadioDefault1"
-                        />
-                        <label class="form-check-label" for="flexRadioDefault1">
-                            One way
-                        </label>
-                    </div>
-
-                    <div class="form-check col-6">
-                        <input
-                            class="form-check-input"
-                            type="radio"
-                            name="flexRadioDefault"
-                            id="flexRadioDefault2"
-                            checked
-                        />
-                        <label class="form-check-label" for="flexRadioDefault2">
-                            Two way
-                        </label>
-                    </div>
-                </div>
-                <form action="" class="">
+                <form action="" class="" method="get">
                     <div class="my-2">
-                        <input
-                            class="form-control my-2"
-                            type="text"
-                            name=""
-                            id="from"
-                            placeholder="From"
-                        />
+                        <select
+                            class="form-select"
+                            name="select"
+                            aria-label="Default select example"
+                        >
+                            <option selected>FROM</option>
+                            <?php 
+                              foreach ($airports as $airport)  :?>
+                            <option value="<?=$airport->AIRPORT_NAME;?>">
+                                <?=$airport->AIRPORT_NAME;?>
+                            </option>
+                            <?php endforeach ?>
+                        </select>
                     </div>
                     <div class="mt-3">
-                        <input
-                            class="form-control my-2"
-                            type="text"
-                            name=""
-                            id="from"
-                            placeholder="To"
-                        />
-                    </div>
-                    <!-- <div class="mt-3 ">
-                        <input
-                            class="form-control my-2"
-                            type="text"
-                            name=""
-                            id="from"
-                            placeholder="To"
-                        />
-                    </div> -->
+                        <select
+                            class="form-select"
+                            name="select"
+                            aria-label="Default select example"
+                        >
+                            <option selected>To</option>
+                            <?php 
+                          foreach ($airports as $airport)  :?>
+                            <option value="<?=$airport->AIRPORT_NAME;?>">
+                                <?=$airport->AIRPORT_NAME;?>
+                            </option>
+                            <?php endforeach ?>
+                        </select>
+                    </div>                   
                     <div class="row">
                         <div class="col-6 my-2">
                             <input
@@ -144,16 +119,19 @@
                             />
                         </div>
                     </div>
-                    <a href="search_index.php" class="btn btn-danger my-1"
-                        >Search</a
+                    <a
+                        href="search_index.php
+                    "
+                        class="btn btn-success my-1"
                     >
+                        Search
+                    </a>
                 </form>
             </div>
-
             <div class="col-12 col-lg-6 mb-2">
                 <img src="images/blue.gif" class="img-fluid rounded-5" alt="" />
             </div>
         </div>
     </div>
 </div>
-<?php require 'footer.php'; ?>
+<?php require "footer.php"; ?>
