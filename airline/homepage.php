@@ -7,7 +7,7 @@ if (!isset($_SESSION["user"])) {
 }
 else 
 {
-$sql = 'SELECT AIRPORT_NAME FROM airport ';
+$sql = 'SELECT * FROM airport ';
 $statement = $connection->prepare($sql); 
 $statement->execute(); 
 $airports =$statement->fetchAll(PDO::FETCH_OBJ);}?>
@@ -68,17 +68,17 @@ $airports =$statement->fetchAll(PDO::FETCH_OBJ);}?>
                 </div>   
                 <div class="row container my-4">    
                 </div>
-                <form action="" class="" method="get">
+                <form action="search_index.php" class="" method="POST">
                     <div class="my-2">
                         <select
                             class="form-select"
-                            name="select"
+                            name="DEPARTURE"
                             aria-label="Default select example"
                         >
                             <option selected>FROM</option>
                             <?php 
                               foreach ($airports as $airport)  :?>
-                            <option value="<?=$airport->AIRPORT_NAME;?>">
+                            <option value="<?=$airport->ID;?>">
                                 <?=$airport->AIRPORT_NAME;?>
                             </option>
                             <?php endforeach ?>
@@ -87,45 +87,37 @@ $airports =$statement->fetchAll(PDO::FETCH_OBJ);}?>
                     <div class="mt-3">
                         <select
                             class="form-select"
-                            name="select"
+                            name="ARRIVAL"
                             aria-label="Default select example"
                         >
                             <option selected>To</option>
                             <?php 
                           foreach ($airports as $airport)  :?>
-                            <option value="<?=$airport->AIRPORT_NAME;?>">
+                            <option value="<?=$airport->ID;?>">
                                 <?=$airport->AIRPORT_NAME;?>
                             </option>
                             <?php endforeach ?>
                         </select>
                     </div>                   
                     <div class="row">
-                        <div class="col-6 my-2">
+                        <div class="col my-2">
                             <input
                                 class="form-control my-2"
                                 type="date"
-                                name=""
+                                name="DATE"
                                 id="from"
                                 placeholder="Date"
                             />
                         </div>
-                        <div class="col-6 my-2">
-                            <input
-                                class="form-control my-2"
-                                type="number"
-                                name=""
-                                id="from"
-                                placeholder="Passenger count"
-                            />
-                        </div>
+                       
                     </div>
-                    <a
-                        href="search_index.php
+                    <button
+                        href="
                     "
-                        class="btn btn-success my-1"
+                        class="btn btn-success my-1" type="submit" name="submit"
                     >
                         Search
-                    </a>
+                    </button>
                 </form>
             </div>
             <div class="col-12 col-lg-6 mb-2">

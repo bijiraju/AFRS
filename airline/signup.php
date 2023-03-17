@@ -1,6 +1,6 @@
 
-<?php require '../connection.php'; ?>
-<?php require '../header.php'; ?>
+<?php require 'connection.php'; ?>
+<?php require 'header.php'; ?>
 
 <?php if (isset($_POST['log'])) {
                         $first_name = $_POST['fname'];
@@ -146,4 +146,4 @@
 				</div>
 			</div>
 		</div>
-		<?php require '../footer.php'; ?>		
+		<?php require 'footer.php'; ?>		

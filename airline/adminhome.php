@@ -1,13 +1,10 @@
 <?php require 'connection.php'; ?>
 <?php require 'header.php'; ?>
-<?php session_start();
-if (!isset($_SESSION["user"])) {
-    header("location:login.php");
-}
-else 
-{
+  
+<?php 
+
 if(isset($_POST['airport_name'])&&($_POST['abbr'])&&($_POST['state_name'])){
-    session_start();
+  
         $state_name=$_POST['state_name'];
         $airport_name=$_POST['airport_name'];
         $abbr=$_POST['abbr'];
@@ -22,14 +19,17 @@ if(isset($_POST['airport_name'])&&($_POST['abbr'])&&($_POST['state_name'])){
         $stmt->execute(['abbr'=>$abbr]);
         $check_abbr= $stmt->fetch(PDO::FETCH_OBJ);
         if(  $check_airport ) {
+            session_start();
               $_SESSION['status'] = "Airport already exist !";
               $_SESSION['status_code'] = "error";
               $_SESSION['message'] = "oops..";
+              $_SESSION['page'] = "adminhome.php";
           }
           else if( $check_abbr){
             $_SESSION['status'] = "Abbreviation already exist !";
               $_SESSION['status_code'] = "error";
               $_SESSION['message'] = "oops..";
+              $_SESSION['page'] = "adminhome.php";
           }
            else {
             $sql='INSERT INTO airport(AIRPORT_NAME,STATE_ID,ABBR,CREATED_BY,UPDATED_BY,CREATED_AT,UPDATED_AT)VALUES(:airport_name,:state_id,:abbr,"admin","admin",now(),now())';
@@ -39,6 +39,7 @@ if(isset($_POST['airport_name'])&&($_POST['abbr'])&&($_POST['state_name'])){
               $_SESSION['status'] = "Successfully Inserted.";
               $_SESSION['status_code'] = "success";
               $_SESSION['message'] = "success";
+              $_SESSION['page'] = "adminhome.php";
             }
     }
     }
@@ -47,9 +48,6 @@ if(isset($_POST['airport_name'])&&($_POST['abbr'])&&($_POST['state_name'])){
     $statement=$connection->prepare($sql); 
     $statement->execute();
     $states=$statement->fetchAll(PDO::FETCH_OBJ);  
-}
-?>
-<?php
 // delete table
 if(isset($_POST['btn_delete'])){
     
@@ -63,138 +61,14 @@ if(isset($_POST['btn_delete'])){
                 $_SESSION['status'] = "Successfully Deleted";
                 $_SESSION['status_code'] = "success";
                 $_SESSION['message'] = "Deleted.";
+                $_SESSION['page'] = "adminhome.php";
                 
             }
 }
 ?>
 <!-- code for airline -->
-<?php 
 
-    if(isset($_POST['AIRLINE_NAME'])){
-        session_start();
-        $airline_name=$_POST['AIRLINE_NAME'];
-        $sql='SELECT * FROM airline WHERE AIRLINE_NAME=:AIRLINE_NAME';
-        $statement=$connection->prepare($sql);
-        $statement->execute(['AIRLINE_NAME' =>$airline_name]);
-        $airline_data= $statement->fetch(PDO :: FETCH_OBJ);
-        if($airline_data){
-            $_SESSION['status'] = "Airline already exist";
-            $_SESSION['status_code'] = "error";
-            $_SESSION['message'] = "Oops.";    
-                }     
-        else{ 
-            $sql='INSERT INTO airline(AIRLINE_NAME,CREATED_BY,UPDATED_BY,CREATED_AT,UPDATED_AT)VALUES(:AIRLINE_NAME,"admin","admin",now(),now())';
-                $statement=$connection->prepare($sql);
-                if($statement->execute([':AIRLINE_NAME'=>$airline_name])){    
-                                   $_SESSION['status'] = "success";
-                                   $_SESSION['status_code'] = "success";
-                                   $_SESSION['message'] = "Data added successfully!";
-
-                 }
-            }
-    }
-?>
-<?php 
-    if(isset($_POST['delete'])){
-        $airline_name=$_POST['AIRLINE_NAME'];
-        $sql='DELETE FROM airline WHERE AIRLINE_NAME=:AIRLINE_NAME';
-        $statement=$connection->prepare($sql);
-        if($statement->execute([':AIRLINE_NAME'=>$airline_name])){   
-                   $_SESSION['status'] = "success";
-                   $_SESSION['status_code'] = "success";
-                   $_SESSION['message'] = "Data deleted successfully!";
-        }
-    }
-?>
-<!-- code for State -->
-<?php
-if(isset($_POST['state_name'])){
-    session_start();
-        $state_name=$_POST['state_name'];
-        $sql='SELECT * FROM `state` WHERE STATE_NAME = :state_name';
-        $stmt = $connection->prepare($sql);
-        $stmt->execute(['state_name'=>$state_name]);
-        $state_data= $stmt->fetch(PDO::FETCH_OBJ);
-        if($state_data){//State already exists    
-              $_SESSION['status'] = "Oops...";
-              $_SESSION['status_code'] = "error";
-              $_SESSION['message'] = "State already exist !";
-        }
-        else {
-            $sql='INSERT INTO state(STATE_NAME,CREATED_BY,UPDATED_BY,CREATED_AT,UPDATED_AT)VALUES(:state_name,"admin","admin",now(),now())';
-            $statement=$connection->prepare($sql);
-            if($statement->execute(['state_name'=>$state_name]))
-            {   
-                  $_SESSION['status'] = "success";
-                  $_SESSION['status_code'] = "success";
-                  $_SESSION['message'] = "Successfully Inserted.";
-            }
-        }
-    }
-?>
-<?php
-// delete table
-if(isset($_POST['btn_delete'])){
-    $state_name=$_POST['state_name'];
-    $sql='DELETE FROM state WHERE state_name=:state_name';
-    $statement = $connection -> prepare($sql);
-    $statement->execute([':state_name'=>$state_name]);
-    if( $statement)
-            {               
-                $_SESSION['status'] = "success";
-                $_SESSION['status_code'] = "success";
-                $_SESSION['message'] = "Successfully Deleted";
-   
-            }
-}
-?>
 <!-- code for flights -->
-<?php
-    if(isset($_POST['FLIGHT_NAME'])&&($_POST['AIRLINE_NAME'])&&($_POST['TOTAL_SEAT'])){
-        $FLIGHT_NAME=$_POST['FLIGHT_NAME'];
-        $AIRLINE_NAME=$_POST['AIRLINE_NAME'];
-        $TOTAL_SEAT=$_POST['TOTAL_SEAT'];
-        $sql='SELECT * FROM flight WHERE FLIGHT_NAME=:FLIGHT_NAME';
-        $statement=$connection->prepare($sql);
-        $statement->execute(['FLIGHT_NAME'=>$FLIGHT_NAME]);
-        $check_flight=$statement->fetch(PDO::FETCH_OBJ);
-        if($check_flight){
-              $_SESSION['status'] = "Oops...";
-              $_SESSION['status_code'] = "error";
-              $_SESSION['message'] = "Flight already exist !";
-    }
-    else{
-        $sql='INSERT INTO flight(FLIGHT_NAME,AIRLINE_ID,TOTAL_SEAT,CREATED_BY,UPDATED_BY,CREATED_AT,UPDATED_AT)VALUES(:FLIGHT_NAME,:AIRLINE_ID,:TOTAL_SEAT,"admin","admin",now(),now())';
-        $statement=$connection->prepare($sql);
-        if($statement->execute([':FLIGHT_NAME'=>$FLIGHT_NAME,'AIRLINE_ID'=>$AIRLINE_NAME,'TOTAL_SEAT'=>$TOTAL_SEAT])){
-              $_SESSION['status'] = "success";
-              $_SESSION['status_code'] = "success";
-              $_SESSION['message'] = "Data added successfully!";
-        
-         }
-    }
-}
-    $sql='SELECT AIRLINE_NAME,ID FROM airline';
-    $statement=$connection->prepare($sql);
-    $statement->execute();
-     $flights=$statement->fetchAll(PDO::FETCH_OBJ);
- ?>
- <?php 
-    if(isset($_POST['delete'])){
-        $FLIGHT_NAME=$_POST['FLIGHT_NAME'];
-        $sql='DELETE FROM flight WHERE FLIGHT_NAME=:FLIGHT_NAME';
-        $statement=$connection->prepare($sql);
-        if($statement->execute([':FLIGHT_NAME'=>$FLIGHT_NAME])){
-          
-            $_SESSION['status'] = "success";
-              $_SESSION['status_code'] = "success";
-              $_SESSION['message'] = "Data deleted successfully!";
-        }     
-    }
-?>
-
-
-
 
 <div
     class="container-fluid m-0 p1 min-vh-100 row justify-content-center align-items-center"
@@ -265,6 +139,8 @@ if(isset($_POST['btn_delete'])){
                                 method="post"
                             >
                                 <div class="dropdown my-2">
+                                
+
                                     <button
                                         class="btn col-12 btn-success dropdown-toggle"
                                         type="button"
@@ -325,6 +201,48 @@ if(isset($_POST['btn_delete'])){
                             </form>
                         </div>
                         <div class="col-12 col-md-6">
+                        
+<?php
+
+    if(isset($_POST['AIRLINE_NAME']))
+    {
+       
+        
+        $airline_name=$_POST['AIRLINE_NAME'];
+        $sql='SELECT * FROM airline WHERE AIRLINE_NAME=:AIRLINE_NAME';
+        $statement=$connection->prepare($sql);
+        $statement->execute(['AIRLINE_NAME' =>$airline_name]);
+        $airline_data= $statement->fetch(PDO :: FETCH_OBJ);
+        if($airline_data){
+            $_SESSION['status'] = "Airline already exist";
+            $_SESSION['status_code'] = "error";
+            $_SESSION['message'] = "Oops."; 
+            $_SESSION['page'] = "adminhome.php";   
+                }     
+        else{ 
+            $sql='INSERT INTO airline(AIRLINE_NAME,CREATED_BY,UPDATED_BY,CREATED_AT,UPDATED_AT)VALUES(:AIRLINE_NAME,"admin","admin",now(),now())';
+                $statement=$connection->prepare($sql);
+                if($statement->execute([':AIRLINE_NAME'=>$airline_name])){    
+                                   $_SESSION['status'] = "success";
+                                   $_SESSION['status_code'] = "success";
+                                   $_SESSION['message'] = "Data added successfully!";
+                                   $_SESSION['page'] = "adminhome.php";
+
+                 }
+            }
+    }
+    if(isset($_POST['delete'])){
+        $airline_name=$_POST['AIRLINE_NAME'];
+        $sql='DELETE FROM airline WHERE AIRLINE_NAME=:AIRLINE_NAME';
+        $statement=$connection->prepare($sql);
+        if($statement->execute([':AIRLINE_NAME'=>$airline_name])){   
+                   $_SESSION['status'] = "success";
+                   $_SESSION['status_code'] = "success";
+                   $_SESSION['message'] = "Data deleted successfully!";
+                   $_SESSION['page'] = "adminhome.php";
+        }
+    }
+?>
                             <form action="" method="post">
                                 <div class="dropdown mt-2">
                                     <button
@@ -363,47 +281,56 @@ if(isset($_POST['btn_delete'])){
                                 </div>
                             </form>
                         </div>
+                        
                         <div class="col-12 col-md-6">
-                            <form action="" method="post">
-                                <div class="dropdown mt-2">
-                                    <button
-                                        class="btn col-12 btn-success dropdown-toggle"
-                                        type="button"
-                                        data-bs-toggle="dropdown"
-                                        aria-expanded="false"
-                                    >
-                                        ADD/DELETE STATES
-                                    </button>
-                                    <ul class="dropdown-menu p-5">
-                                        <li>
-                                            <input
-                                                class="border border-2 border-grey my-1 dropdown-item form-control"
-                                                name="state_name"
-                                                placeholder="State Name"
-                                            />
-                                        </li>
 
-                                        <li>
-                                            <button
-                                                type="submit"
-                                                name="submit"
-                                                class="btn btn-success"
-                                            >
-                                                Add
-                                            </button>
-                                            <button
-                                                type="submit"
-                                                name="btn_delete"
-                                                class="btn btn-danger"
-                                            >
-                                                Delete
-                                            </button>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </form>
-                        </div>
-                        <div class="col-12 col-md-6">
+
+
+                        <?php 
+
+    if(isset($_POST['FLIGHT_NAME'])&&($_POST['AIRLINE_NAME'])&&($_POST['TOTAL_SEAT'])){
+        $FLIGHT_NAME=$_POST['FLIGHT_NAME'];
+        $AIRLINE_NAME=$_POST['AIRLINE_NAME'];
+        $TOTAL_SEAT=$_POST['TOTAL_SEAT'];
+        $sql='SELECT * FROM flight WHERE FLIGHT_NAME=:FLIGHT_NAME';
+        $statement=$connection->prepare($sql);
+        $statement->execute(['FLIGHT_NAME'=>$FLIGHT_NAME]);
+        $check_flight=$statement->fetch(PDO::FETCH_OBJ);
+        if($check_flight){
+              $_SESSION['status'] = "Oops...";
+              $_SESSION['status_code'] = "error";
+              $_SESSION['message'] = "Flight already exist !";
+              $_SESSION['page'] = "adminhome.php";
+    }
+    else{
+        $sql='INSERT INTO flight(FLIGHT_NAME,AIRLINE_ID,TOTAL_SEAT,CREATED_BY,UPDATED_BY,CREATED_AT,UPDATED_AT)VALUES(:FLIGHT_NAME,:AIRLINE_ID,:TOTAL_SEAT,"admin","admin",now(),now())';
+        $statement=$connection->prepare($sql);
+        if($statement->execute([':FLIGHT_NAME'=>$FLIGHT_NAME,'AIRLINE_ID'=>$AIRLINE_NAME,'TOTAL_SEAT'=>$TOTAL_SEAT])){
+              $_SESSION['status'] = "success";
+              $_SESSION['status_code'] = "success";
+              $_SESSION['message'] = "Data added successfully!";
+              $_SESSION['page'] = "adminhome.php";
+        
+         }
+    }
+}
+    $sql='SELECT AIRLINE_NAME,ID FROM airline';
+    $statement=$connection->prepare($sql);
+    $statement->execute();
+     $flights=$statement->fetchAll(PDO::FETCH_OBJ);
+    if(isset($_POST['delete2'])){
+        $FLIGHT_NAME=$_POST['FLIGHT_NAME'];
+        $sql='DELETE FROM flight WHERE FLIGHT_NAME=:FLIGHT_NAME';
+        $statement=$connection->prepare($sql);
+        if($statement->execute([':FLIGHT_NAME'=>$FLIGHT_NAME])){
+          
+            $_SESSION['status'] = "success";
+              $_SESSION['status_code'] = "success";
+              $_SESSION['message'] = "Data deleted successfully!";
+              $_SESSION['page'] = "adminhome.php";
+        }     
+    }
+?>
                             <form action="" method="post">
                                 <div class="dropdown mt-2">
                                     <button
@@ -435,8 +362,10 @@ if(isset($_POST['btn_delete'])){
                                              <?php foreach($flights as $flight):?>
 				                               <option value="<?= $flight->ID; ?>" required><?= $flight->AIRLINE_NAME;?></option>		
                                             <?php endforeach;?>		
-                                             </select>                     
+                                         </select>
+                                            
                                         </li>
+
                                         <li>
                                             <button
                                                 type="submit"
@@ -447,7 +376,7 @@ if(isset($_POST['btn_delete'])){
                                             </button>
                                             <button
                                                 type="submit"
-                                                name="delete"
+                                                name="delete2"
                                                 class="btn btn-danger"
                                             >
                                                 Delete
@@ -457,35 +386,46 @@ if(isset($_POST['btn_delete'])){
                                 </div>
                             </form>
                         </div>
-                        <div class="col-12">
-                        
+                        <div class="col-12 col-lg-6">
+
+<?php
+                         
+
+if(isset($_POST['booking'])){
+        
+    $sql="SELECT * FROM booking"; 
+    $statement=$connection->prepare($sql); 
+    $statement->execute();
+   if($bookings=$statement->fetchAll(PDO::FETCH_OBJ))  {
+          
+          echo'bookings';
+        }  
+        else{
+            $_SESSION['status'] = "success";
+            $_SESSION['status_code'] = "error";
+            $_SESSION['message'] = "No bookings!";
+            $_SESSION['page'] = "adminhome.php";
+        }   
+    }?>
+
                             <form action="" method="post">
-                                <button name= "bookings" type="submit" class="btn col-12  my-2 btn-success">
+                                <button name="booking" class="btn col-12 my-2 btn-success">
                                     SHOW BOOKING DETAIL
                                 </button>
-
-                                <?php 
-if(isset($_POST['bookings'])){
-        $sql='SELECT * FROM `booking`';
-            $stmt = $connection->prepare($sql);
-            $stmt->execute();
-            if ($booking= $stmt->fetch(PDO::FETCH_OBJ)) {
-            echo 'booking';
-        }
-        else{ 
-            
-            $_SESSION['status'] = "Danger";
-            $_SESSION['status_code'] = "Danger";
-            $_SESSION['message'] = "No bookings!"; 
-        }
-}else{
-    
-}
-?>
                             </form>
+                            
                         </div>
+                        <div class="col">
+
+                        <form action="view.php" method="post">
+                                <button name="view" class="btn col-12 my-2 btn-success">
+                                    VIEW
+                                </button>
+                            </form>
+</div>
                     </div>
                 </div>
+
                 <div class="col-12 col-lg-6 mb-2">
                     <img
                         src="images/blue.gif"
@@ -496,5 +436,8 @@ if(isset($_POST['bookings'])){
             </div>
         </div>
     </div>
+    
 </div>
 <?php require 'footer.php'; ?>
+
+

@@ -24,7 +24,7 @@
                     contact: "8943120775",
                 },
                 notes: {
-                    address: "Razorpay Corporate Office",
+                    address: "PurpleFly.com",
                 },
                 theme: {
                     color: "#3399cc",
