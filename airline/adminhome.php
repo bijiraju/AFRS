@@ -419,7 +419,7 @@ if(isset($_POST['booking'])){
 
                         <form action="view.php" method="post">
                                 <button name="view" class="btn col-12 my-2 btn-success">
-                                    VIEW
+                                    VIEW 
                                 </button>
                             </form>
 </div>

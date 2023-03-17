@@ -53,95 +53,177 @@
             </div>
         </nav>
         <div class="row">
-            <div class="col-12 col-lg-6 my-4">
+            <div class="col-12 col-lg-4 my-4">
                 <div class="row container my-4"></div>
-                <form action="" class="" method="POST">
-                    <div class="my-2"></div>
-                    <div class="mt-3"></div>
-                    <div class="col-6">
-                        <form action="" name="airports" method="post">
-                            <button
-                                type="submit"
-                                name="airports"
-                                class="btn col-12 my-2 btn-success"
-                            >
-                                Airports
-                            </button>
-                        </form>
-                    </div>
-                    <div class="col-6">
-                        <form action="" name="flight" method="post">
-                            <button
-                                type="submit"
-                                name="flight"
-                                class="btn col-12 my-2 btn-success"
-                            >
-                                Flights
-                            </button>
-                        </form>
-                    </div>
-                    <div class="col-6">
-                        <form action="" name="Airline" method="post">
-                            <button
-                                type="submit"
-                                name="Airline"
-                                class="btn col-12 my-2 btn-success"
-                            >
-                                Airline
-                            </button>
-                        </form>
-                    </div>
-                </form>
+
+                <div class="my-2"></div>
+                <div class="mt-3"></div>
+                <div class="col-6">
+                    <button
+                        id="button1"
+                        type="submit"
+                        name="airports"
+                        class="btn col-12 my-2 btn-success"
+                    >
+                        Airports
+                    </button>
+                </div>
+                <div class="col-6">
+                    <button
+                        id="button2"
+                        type="submit"
+                        name="flight"
+                        class="btn col-12 my-2 btn-success"
+                    >
+                        Flights
+                    </button>
+                </div>
+                <div class="col-6">
+                    <button
+                        id="button3"
+                        type="submit"
+                        name="airline"
+                        class="btn col-12 my-2 btn-success"
+                    >
+                        Airline
+                    </button>
+                </div>
             </div>
-            <div class="col-12 col-lg-6 my-4">
-                <table class="table table-primary table-striped text-center">
-                    <thead>
-                        <tr>
-                            <th>Airport id</th>
 
-                            <th>Airport Name</th>
-
-                            <th>State id</th>
-
-                            <th>Abbr</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <?php 
+            <div class="col-12 col-lg-8 my-4">
+                <?php 
                     
-                    if (isset($_POST['airports'])) 
-                 {  $air = $_POST['airports']; 
+          
                     $sql='SELECT * FROM airport';
                     $statement=$connection->prepare($sql);
-                            $statement->execute();
-                            $airport=$statement->fetch(PDO::FETCH_OBJ);} ?>
-                        </tr>
-                        <tr>
-                            <td><?=$flight->ID;?></td>
-                            <td><?= $airport->AIRPORT_ID; ?></td>
-                            <td><?= $airport->AIRPORT_NAME; ?></td>
-                            <td><?= $airport->STATE_ID; ?></td>
-                            <td><?= $airport->ABBR; ?></td>
-                        </tr>
-                    </tbody>
-                </table>
- <?php
-
-if (isset($_POST['flight'])) 
-                 {  
-                $flight = $_POST['flight'];
-                    
-                $sql='SELECT * FROM flight'; 
-                $statement=$connection->prepare($sql);
                 $statement->execute();
-                $flight=$statement->fetch(PDO::FETCH_OBJ);} //
+                $airport=$statement->fetchAll(PDO::FETCH_OBJ);?>
+                <div
+                    id="p"
+                    class="w-100 rounded overflow-scroll overflow-x-hidden"
+                    style="height: 200px"
+                >
+                    <table
+                        class="table table-hover table-success table-responsive table-bordered text-center"
+                    >
+                        <thead>
+                            <tr>
+                                <th>Airport id</th>
+
+                                <th>Airport Name</th>
+
+                                <th>State id</th>
+
+                                <th>Abbr</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr></tr>
+                            <tr>
+                                <?php
+                        
+                           
+                            foreach($airport as $air): ?>
+                            </tr>
+
+                            <tr>
+                                <td><?= $air->ID; ?></td>
+                                <td><?= $air->AIRPORT_NAME; ?></td>
+                                <td><?= $air->STATE_ID; ?></td>
+                                <td><?=$air->ABBR; ?></td>
+                            </tr>
+                            <?php
+                       
+                         endforeach ?>
+                        </tbody>
+                    </table>
+                </div>
+
+                <?php 
+     
+     
+          $sql='SELECT * FROM flight'; 
+          $statement=$connection->prepare($sql); $statement->execute();
+                $flight=$statement->fetchAll(PDO::FETCH_OBJ);?>
+                <div
+                    id="myDiv"
+                    class="w-100 rounded overflow-scroll overflow-x-hidden"
+                    style="height: 200px"
+                >
+                    <table
+                        class="table table-hover table-success table-responsive table-bordered text-center"
+                    >
+                        <thead>
+                            <tr>
+                                <th>Flight id</th>
+
+                                <th>Flight Name</th>
+                                <th>Airline Id</th>
+
+                                <th>Total Seat</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr></tr>
+                            <tr>
+                                <?php
+         
+            
+             foreach($flight as $fly): ?>
+                            </tr>
+
+                            <tr>
+                                <td><?= $fly->ID; ?></td>
+                                <td><?= $fly->FLIGHT_NAME; ?></td>
+                                <td><?= $fly->AIRLINE_ID; ?></td>
+                                <td><?= $fly->TOTAL_SEAT; ?></td>
+                            </tr>
+                            <?php
         
-?>
-                <td><?=$flight->ID;?></td>
-                <td><?= $flight->FLIGHT_NAME; ?></td>
-                <td><?= $flight->AIRLINE_ID; ?></td>
-                <td><?= $airport->TOTAL_SEAT; ?></td>
+          endforeach ?>
+                        </tbody>
+                    </table>
+                </div>
+
+                <?php 
+     
+                
+                     $sql='SELECT * FROM airline'; 
+                     $statement=$connection->prepare($sql);
+                $statement->execute();
+                $airlines=$statement->fetchAll(PDO::FETCH_OBJ);?>
+                <div
+                    class="w-100 rounded overflow-scroll overflow-x-hidden"
+                    style="height: 200px"
+                    id="my"
+                >
+                    <table
+                        class="table table-hover table-success table-responsive table-bordered text-center"
+                    >
+                        <thead>
+                            <tr>
+                                <th>Airline id</th>
+
+                                <th>Airline Name</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr></tr>
+                            <tr>
+                                <?php
+                        foreach($airlines as $airline): ?>
+                            </tr>
+
+                            <tr>
+                                <td><?= $airline->ID; ?></td>
+                                <td><?= $airline->AIRLINE_NAME; ?></td>
+                            </tr>
+                            <?php
+                   
+                     endforeach ?>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
