@@ -13,45 +13,100 @@
         $sql='SELECT * from `route` WHERE DEPARTURE_AIRPORT_ID=:DEPARTURE AND ARRIVAL_AIRPORT_ID=:ARRIVAL AND DEPARTURE_DATE=:DATE';
         $statement=$connection->prepare($sql);
         $statement->execute([':DEPARTURE'=> $DEPARTURE,':ARRIVAL'=> $ARRIVAL,':DATE'=>$DATE]);
-        $flights=$statement->fetchAll(PDO::FETCH_OBJ);
-  
+        $flights=$statement->fetchAll(PDO::FETCH_OBJ);  
     }
     
     ?>
 
 
 
-<div class="container-fluid m-0 p-0">
-    <!-- nav bar start -->
-    <div class="row m-0 p1 py-5">
-        <div class="col-12 text-center text-white py-4">
-            <div class="row">
-                <div class="col-4">
-                    <a href="homepage.php" class="border-0 btn">
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="30"
-                            height="26"
-                            fill="currentcolor"
-                            class="bi bi-arrow-left-circle-fill"
-                            viewBox="0 0 16 16"
-                        >
-                            <path
-                                d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0zm3.5 7.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z"
-                            />
-                        </svg>
-                    </a>
-                </div>
-                <div class="col-4">
-                    <h1><strong>KIV - SFO</strong></h1>
+<div
+    class="container-fluid m-0 p1 min-vh-100 row justify-content-center py-5"
+>
+    <div class=" col-12 col-lg-10  rounded-3 col-sm-10 p2  text-white">
+        <!-- navbar -->
+        <nav class="navbar navbar-expand-lg navbar-light ">
+            <div class="container-fluid p-0">
+                <h4>Purple Fly.com</h4>
+             
+                <button
+                    class="navbar-toggler"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent"
+                    aria-controls="navbarSupportedContent"
+                    aria-expanded="false"
+                    aria-label="Toggle navigation"
+                >
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div
+                    class="collapse navbar-collapse"
+                    id="navbarSupportedContent"
+                >
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a
+                                class="nav-link active text-white"
+                                aria-current="page"
+                                href="index.php"
+                                >Home</a
+                            >
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active text-white" href="#"
+                                >About</a
+                            >
+                        </li>
+                        <li class="nav-item">
+                            <a
+                                class="nav-link active text-white"
+                                href="logout.php"
+                                >Login/Signup</a
+                            >
+                        </li>
+                    </ul>                  
                 </div>
             </div>
-        </div>
-    </div>
-    <!-- nav bar end -->
-    <!-- .First flight details start -->
-    <div class="container col-12 col-lg-9 bg-light mt-2 rounded-4 border">
-    <table class="table table-primary table-striped text-center">
+        </nav>
+
+        <?php                  
+                        
+                        $sql = 'SELECT * FROM airport WHERE ID=:id';
+                        $statement = $connection->prepare($sql);
+                        $statement->execute([':id' => $DEPARTURE]);
+                        $depart_name = $statement->fetch(PDO::FETCH_OBJ);
+                        
+                        $sql = 'SELECT * FROM airport WHERE ID=:id';
+                        $statement = $connection->prepare($sql);
+                        $statement->execute([':id' => $ARRIVAL]);
+                        $arrival_name = $statement->fetch(PDO::FETCH_OBJ);
+                        ?>
+                        
+                        <div class="col-12 text-center text-white py-4">
+                          <div class="row">
+                            <div class="col-12 text-center">
+                                <h2>
+                               <?php 
+                                $_SESSION["departure"]=$DEPARTURE;
+                                $_SESSION["arrival"]=$ARRIVAL;
+                                ?>
+                                <?php echo $depart_name->ABBR ?> -
+                              <?php echo $arrival_name->ABBR ?>
+                                </h2>
+                              
+                            </div>
+                          </div>
+                        </div>
+   
+    <div class="container col-12 col-lg-10 bg-light p-0 my-5 ">
+
+    <div
+                    
+        class="w-100  overflow-x-scroll  "
+                    
+                >
+    <table class="table bg-success bg-opacity-75 m-0 table-hover table-responsive table-striped text-center">
         <thead>
             <tr>
             <th>
@@ -115,7 +170,11 @@
              endforeach ?>
         </tbody>
     </table>
+             </div>
     <!-- .First flight details end -->
 </div>
+             </div>
+             </div>
+             </div>
 <!-- container-fluid -->
 <?php require 'footer.php'; ?>

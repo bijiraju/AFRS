@@ -4,12 +4,10 @@
 <?php session_start(); 
 ?>
 <!-- main div -->
-<div
-    class="container-fluid m-0 p1 min-vh-100 row justify-content-center align-items-center"
->
-    <div class="col-12 container rounded-3 col-sm-10 p2 px-5 mx-5 text-white">
+<div class="container-fluid m-0 p1 min-vh-100 row justify-content-center py-5">
+    <div class="col-12 container rounded-3 col-sm-10 p2 text-white">
         <!-- navbar -->
-        <nav class="navbar navbar-expand-lg navbar-light mb-5">
+        <nav class="navbar navbar-expand-lg navbar-light">
             <div class="container-fluid p-0">
                 <h4>Purple Fly.com</h4>
                 <button
@@ -52,13 +50,9 @@
                 </div>
             </div>
         </nav>
-        <div class="row">
-            <div class="col-12 col-lg-4 my-4">
-                <div class="row container my-4"></div>
-
-                <div class="my-2"></div>
-                <div class="mt-3"></div>
-                <div class="col-6">
+        <div class="row justify-content-center">
+            <div class="col-6 row mt-5 justify-content-center">
+                <div class="col-12">
                     <button
                         id="button1"
                         type="submit"
@@ -68,7 +62,7 @@
                         Airports
                     </button>
                 </div>
-                <div class="col-6">
+                <div class="col-12 col-lg-6">
                     <button
                         id="button2"
                         type="submit"
@@ -78,7 +72,7 @@
                         Flights
                     </button>
                 </div>
-                <div class="col-6">
+                <div class="col-12 col-lg-6">
                     <button
                         id="button3"
                         type="submit"
@@ -88,23 +82,32 @@
                         Airline
                     </button>
                 </div>
+                <div class="col-12 col-lg-6">
+                    <button
+                        id="button4"
+                        type="submit"
+                        name="Route"
+                        class="btn col-12 my-2 btn-success"
+                    >
+                        Routes
+                    </button>
+                </div>
             </div>
 
-            <div class="col-12 col-lg-8 my-4">
+            <div class="col-12 col-lg-6 my-4">
                 <?php 
                     
           
-                    $sql='SELECT * FROM airport';
-                    $statement=$connection->prepare($sql);
-                $statement->execute();
+                $sql='SELECT * FROM airport';
+                $statement=$connection->prepare($sql); $statement->execute();
                 $airport=$statement->fetchAll(PDO::FETCH_OBJ);?>
                 <div
                     id="p"
-                    class="w-100 rounded overflow-scroll overflow-x-hidden"
-                    style="height: 200px"
+                    class="w-100 rounded overflow-scroll"
+                    style="height:250px"
                 >
                     <table
-                        class="table table-hover table-success table-responsive table-bordered text-center"
+                        class="table table-hover table-dark table-responsive table-bordered text-center"
                     >
                         <thead>
                             <tr>
@@ -115,6 +118,7 @@
                                 <th>State id</th>
 
                                 <th>Abbr</th>
+                               
                             </tr>
                         </thead>
                         <tbody>
@@ -126,11 +130,13 @@
                             foreach($airport as $air): ?>
                             </tr>
 
+                           
                             <tr>
                                 <td><?= $air->ID; ?></td>
                                 <td><?= $air->AIRPORT_NAME; ?></td>
                                 <td><?= $air->STATE_ID; ?></td>
                                 <td><?=$air->ABBR; ?></td>
+                               
                             </tr>
                             <?php
                        
@@ -147,36 +153,36 @@
                 $flight=$statement->fetchAll(PDO::FETCH_OBJ);?>
                 <div
                     id="myDiv"
-                    class="w-100 rounded overflow-scroll overflow-x-hidden"
+                    class="w-100 rounded overflow-scroll "
                     style="height: 200px"
                 >
                     <table
-                        class="table table-hover table-success table-responsive table-bordered text-center"
+                        class="table table-hover table-dark table-responsive table-bordered text-center"
                     >
                         <thead>
+                           
                             <tr>
                                 <th>Flight id</th>
-
                                 <th>Flight Name</th>
                                 <th>Airline Id</th>
-
                                 <th>Total Seat</th>
+                               
                             </tr>
                         </thead>
                         <tbody>
                             <tr></tr>
                             <tr>
                                 <?php
-         
-            
              foreach($flight as $fly): ?>
                             </tr>
 
                             <tr>
                                 <td><?= $fly->ID; ?></td>
+
                                 <td><?= $fly->FLIGHT_NAME; ?></td>
                                 <td><?= $fly->AIRLINE_ID; ?></td>
                                 <td><?= $fly->TOTAL_SEAT; ?></td>
+                             
                             </tr>
                             <?php
         
@@ -193,18 +199,21 @@
                 $statement->execute();
                 $airlines=$statement->fetchAll(PDO::FETCH_OBJ);?>
                 <div
-                    class="w-100 rounded overflow-scroll overflow-x-hidden"
+                    class="w-100 rounded overflow-scroll "
                     style="height: 200px"
                     id="my"
                 >
+                    
+
                     <table
-                        class="table table-hover table-success table-responsive table-bordered text-center"
+                        class="table table-hover table-dark table-responsive table-bordered text-center"
                     >
                         <thead>
                             <tr>
                                 <th>Airline id</th>
 
                                 <th>Airline Name</th>
+                                
                             </tr>
                         </thead>
                         <tbody>
@@ -217,6 +226,63 @@
                             <tr>
                                 <td><?= $airline->ID; ?></td>
                                 <td><?= $airline->AIRLINE_NAME; ?></td>
+                                
+                            </tr>
+                            <?php
+                   
+                     endforeach ?>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- code for routess -->
+
+                <?php 
+     
+                
+                $sql='SELECT * FROM route'; 
+                $statement=$connection->prepare($sql); $statement->execute();
+                $Routes=$statement->fetchAll(PDO::FETCH_OBJ);?>
+                <div
+                    class="w-100 rounded overflow-scroll "
+                    style="height: 200px"
+                    id="myroute"
+                >
+                    
+
+                    <table
+                        class="table table-hover table-dark table-responsive table-bordered text-center"
+                    >
+                        <thead>
+                            <tr>
+                                <th>Route id</th>
+                                <th>Fight id</th>
+                                <th>Departure Name</th>
+                                <th>Arrival Name</th>
+                                <th>Departure Date</th>
+                                <th>Arrival Date</th>
+                                <th>Departure time</th>
+                                <th>Arrival time</th>
+                              
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr></tr>
+                            <tr>
+                                <?php
+                        foreach($Routes as $Route): ?>
+                            </tr>
+
+                            <tr>
+                                <td><?= $Route->ID; ?></td>
+                                <td><?= $Route->FLIGHT_ID; ?></td>
+                                <td><?= $Route->DEPARTURE_AIRPORT_ID; ?></td>
+                                <td><?= $Route->ARRIVAL_AIRPORT_ID; ?></td>
+                                <td><?= $Route->ARRIVAL_TIME; ?></td>
+                                <td><?= $Route->DEPARTURE_TIME; ?></td>
+                                <td><?= $Route->ARRIVAL_DATE; ?></td>
+                                <td><?= $Route->DEPARTURE_DATE; ?></td>
+                             
                             </tr>
                             <?php
                    

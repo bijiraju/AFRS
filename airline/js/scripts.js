@@ -1,22 +1,22 @@
-// document.getElementById("p").setAttribute("hidden", "");
-// document.getElementById("myDiv").setAttribute("hidden", "");
-// document.getElementById("my").setAttribute("hidden", "");
-$("#p").hide(),
-    $("#my").hide(),
-    $("#myDiv").hide(),
-    $(document).ready(function () {
-        $("#button1").click(function () {
-            $("#p").toggle();
-            $("#my").hide();
-            $("#myDiv").hide();
-        });
+$(document).ready(function () {
+    $("#p").hide(), $("#my").hide(), $("#myDiv").hide(), $("#myroute").hide();
+});
+
+$(document).ready(function () {
+    $("#button1").click(function () {
+        $("#p").toggle();
+        $("#my").hide();
+        $("#myDiv").hide();
+        $("#myroute").hide();
     });
+});
 
 $(document).ready(function () {
     $("#button2").click(function () {
         $("#myDiv").toggle();
         $("#p").hide();
         $("#my").hide();
+        $("#myroute").hide();
     });
 });
 
@@ -25,5 +25,17 @@ $(document).ready(function () {
         $("#my").toggle();
         $("#myDiv").hide();
         $("#p").hide();
+        $("#myroute").hide();
     });
 });
+
+$(document).ready(function () {
+    $("#button4").click(function () {
+        $("#myroute").toggle();
+        $("#myDiv").hide();
+        $("#p").hide();
+        $("#my").hide();
+    });
+});
+
+// CODE FOR PASSENGERS

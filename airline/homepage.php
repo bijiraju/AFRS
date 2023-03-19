@@ -3,7 +3,7 @@
 
 <?php session_start();
 if (!isset($_SESSION["user"])) {
-    header("location:login.php");
+    header("location:i.php");
 }
 else 
 {
@@ -13,7 +13,7 @@ $statement->execute();
 $airports =$statement->fetchAll(PDO::FETCH_OBJ);}?>
 <!-- main div -->
 <div
-    class="container-fluid m-0 p1 min-vh-100 row justify-content-center align-items-center"
+    class="container-fluid m-0 p1 min-vh-100 row justify-content-center py-5"
 >
     <div class="col-12 container rounded-3 col-sm-10 p2 px-5 mx-5 text-white">
         <!-- navbar -->
@@ -60,7 +60,7 @@ $airports =$statement->fetchAll(PDO::FETCH_OBJ);}?>
                 </div>
             </div>
         </nav>
-        <div class="row">
+        <div class="row ">
             <div class="col-12 col-lg-6 my-4">
                 <div class="text-white mb-3">
                     <h1>WHERE WOULD YOU</h1>
@@ -69,7 +69,7 @@ $airports =$statement->fetchAll(PDO::FETCH_OBJ);}?>
                 <div class="row container my-4">    
                 </div>
                 <form action="search_index.php" class="" method="POST">
-                    <div class="my-2">
+                    <div class="my-3">
                         <select
                             class="form-select"
                             name="DEPARTURE"
@@ -84,7 +84,7 @@ $airports =$statement->fetchAll(PDO::FETCH_OBJ);}?>
                             <?php endforeach ?>
                         </select>
                     </div>
-                    <div class="mt-3">
+                    <div class="my-3">
                         <select
                             class="form-select"
                             name="ARRIVAL"
@@ -99,10 +99,10 @@ $airports =$statement->fetchAll(PDO::FETCH_OBJ);}?>
                             <?php endforeach ?>
                         </select>
                     </div>                   
-                    <div class="row">
-                        <div class="col my-2">
+                    <div class=" my-3">
+                        <div class="col ">
                             <input
-                                class="form-control my-2"
+                                class="form-control "
                                 type="date"
                                 name="DATE"
                                 id="from"
@@ -120,7 +120,7 @@ $airports =$statement->fetchAll(PDO::FETCH_OBJ);}?>
                     </button>
                 </form>
             </div>
-            <div class="col-12 col-lg-6 mb-2">
+            <div class="col-12 col-lg-6 my-4">
                 <img src="images/blue.gif" class="img-fluid rounded-5" alt="" />
             </div>
         </div>

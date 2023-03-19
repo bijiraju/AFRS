@@ -54,11 +54,65 @@
                             }
                         }
                     } ?>
-		<div class="container-fluid p1 min-vh-100">
-			<div class="container col-10 col-md-6 ustify-content-center ">
-				<div class="row justify-content-center">
-					<div class="col-12 col-md-10 mt-5 text-white text-center">
-						<h1>Register</h1>
+		<div
+    class="container-fluid m-0 p1 min-vh-100 row justify-content-center py-5"
+>
+    <div class="col-12 container rounded-3 col-sm-10 p2 px-5  text-white">
+			<!-- navbar -->
+
+
+		<nav class="navbar navbar-expand-lg navbar-light mb-5">
+            <div class="container-fluid p-0 ">
+                <h4 class="text-white">Purple Fly.com</h4>
+                <button
+                    class="navbar-toggler"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent"
+                    aria-controls="navbarSupportedContent"
+                    aria-expanded="false"
+                    aria-label="Toggle navigation"
+                >
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div
+                    class="collapse navbar-collapse"
+                    id="navbarSupportedContent"
+                >
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a
+                                class="nav-link active text-white"
+                                aria-current="page"
+                                href="index.php"
+                                >Home</a
+                            >
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active text-white" href="#"
+                                >About</a
+                            >
+                        </li>
+                        <li class="nav-item">
+                            <a
+                                class="nav-link active text-white"
+                                href="logout.php"
+                                >Login/Signup</a
+                            >
+                        </li>
+                    </ul>                  
+                </div>
+            </div>
+        </nav>
+
+
+
+
+
+			<div class="container  col-10 col-md-6 ustify-content-center ">
+				<div class="row  justify-content-center">
+					<div class="col-12 col-md-10  text-white text-center">
+						<h2>Register To Purple Fly.com</h2>
 						<form action="" method="post" class="">
 							<div class="pb-4 mt-5">
 								<input
