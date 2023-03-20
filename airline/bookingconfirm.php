@@ -11,11 +11,16 @@
    $DEPARTURE=$_SESSION['departure'];
    $ARRIVAL=$_SESSION['arrival'];            
     $sql = 'SELECT * FROM airport WHERE ID=:id';
-    $statement = $connection->prepare($sql); $statement->execute([':id'
-=>$DEPARTURE]); $depart_name =$statement->fetch(PDO::FETCH_OBJ); $sql = 'SELECT
-* FROM airport WHERE ID=:id'; $statement = $connection->prepare($sql);
-$statement->execute([':id' =>$ARRIVAL]); $arrival_name =
-$statement->fetch(PDO::FETCH_OBJ); $sql='SELECT * FROM route WHERE
+    $statement = $connection->prepare($sql); 
+    $statement->execute([':id'=>$DEPARTURE]); 
+    $depart_name =$statement->fetch(PDO::FETCH_OBJ);
+    
+    
+    $sql = 'SELECT * FROM airport WHERE ID=:id'; $statement = $connection->prepare($sql);
+$statement->execute([':id' =>$ARRIVAL]); 
+$arrival_name = $statement->fetch(PDO::FETCH_OBJ); 
+
+$sql='SELECT * FROM route WHERE
 DEPARTURE_AIRPORT_ID=:id AND ARRIVAL_AIRPORT_ID=:idtwo';
 $statement=$connection->prepare($sql);
 $statement->execute([':id'=>$DEPARTURE,':idtwo'=>$ARRIVAL]);
@@ -178,8 +183,8 @@ $Route=$statement->fetch(PDO::FETCH_OBJ); ?>
                                         aria-label="Default select example"
                                     >
                                         <option selected>Select type</option>
-                                        <option value="1">Bussiness</option>
-                                        <option value="2">Economy</option>
+                                        <option value="0">Bussiness</option>
+                                        <option value="1">Economy</option>
                                     </select>
                                 </div>
                                 <!-- second passenger -->
@@ -202,8 +207,8 @@ $Route=$statement->fetch(PDO::FETCH_OBJ); ?>
                                             <option selected>
                                                 Select type
                                             </option>
-                                            <option value="1">Bussiness</option>
-                                            <option value="2">Economy</option>
+                                            <option value="0">Bussiness</option>
+                                            <option value="1">Economy</option>
                                         </select>
                                     </div>
                                 </div>
@@ -226,8 +231,8 @@ $Route=$statement->fetch(PDO::FETCH_OBJ); ?>
                                             <option selected>
                                                 Select type
                                             </option>
-                                            <option value="1">Bussiness</option>
-                                            <option value="2">Economy</option>
+                                            <option value="0">Bussiness</option>
+                                            <option value="1">Economy</option>
                                         </select>
                                     </div>
                                 </div>
@@ -245,7 +250,7 @@ $Route=$statement->fetch(PDO::FETCH_OBJ); ?>
                                     <div class="col-3">
                                         <select
                                             name="select4"
-                                            class=" my-1"
+                                            class="form-select my-1"
                                             aria-label="Default select example"
                                         >
                                             <option selected>

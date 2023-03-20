@@ -10,6 +10,7 @@
         $DEPARTURE= $_POST['DEPARTURE'];
         $ARRIVAL= $_POST['ARRIVAL'];
         $DATE= $_POST['DATE'];
+        
         $sql='SELECT * from `route` WHERE DEPARTURE_AIRPORT_ID=:DEPARTURE AND ARRIVAL_AIRPORT_ID=:ARRIVAL AND DEPARTURE_DATE=:DATE';
         $statement=$connection->prepare($sql);
         $statement->execute([':DEPARTURE'=> $DEPARTURE,':ARRIVAL'=> $ARRIVAL,':DATE'=>$DATE]);

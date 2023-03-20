@@ -4,6 +4,6 @@
 <?php
 session_start();
 session_destroy();
-header("location:i.php");
+echo "<script>window.location.href='index.php'</script>";
 ?>
 <?php require 'footer.php'; ?>

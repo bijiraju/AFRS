@@ -1,5 +1,9 @@
 $(document).ready(function () {
-    $("#p").hide(), $("#my").hide(), $("#myDiv").hide(), $("#myroute").hide();
+    $("#p").hide(),
+        $("#my").hide(),
+        $("#myDiv").hide(),
+        $("#myroute").hide(),
+        $("#pp").hide();
 });
 
 $(document).ready(function () {
@@ -8,6 +12,7 @@ $(document).ready(function () {
         $("#my").hide();
         $("#myDiv").hide();
         $("#myroute").hide();
+        $("#pp").hide();
     });
 });
 
@@ -17,6 +22,7 @@ $(document).ready(function () {
         $("#p").hide();
         $("#my").hide();
         $("#myroute").hide();
+        $("#pp").hide();
     });
 });
 
@@ -26,6 +32,7 @@ $(document).ready(function () {
         $("#myDiv").hide();
         $("#p").hide();
         $("#myroute").hide();
+        $("#pp").hide();
     });
 });
 
@@ -35,6 +42,17 @@ $(document).ready(function () {
         $("#myDiv").hide();
         $("#p").hide();
         $("#my").hide();
+        $("#pp").hide();
+    });
+});
+
+$(document).ready(function () {
+    $("#buttonn").click(function () {
+        $("#myroute").hide();
+        $("#myDiv").hide();
+        $("#p").hide();
+        $("#my").hide();
+        $("#pp").toggle();
     });
 });
 

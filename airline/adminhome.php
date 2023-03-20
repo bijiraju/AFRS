@@ -5,7 +5,7 @@
 <?php 
  session_start();
 if (!isset($_SESSION["user"])) {
-    header("location:i.php");
+    echo "<script>window.location.href='index.php'</script>";
 }
 else if(isset($_POST['airport_name'])&&($_POST['abbr'])&&($_POST['state_name'])){
   
@@ -401,9 +401,7 @@ if(isset($_POST['booking'])){
     $sql="SELECT * FROM booking"; 
     $statement=$connection->prepare($sql); 
     $statement->execute();
-   if($bookings=$statement->fetchAll(PDO::FETCH_OBJ))  {
-          
-          
+   if($bookings=$statement->fetchAll(PDO::FETCH_OBJ))  {        
         }  
         else{
             $_SESSION['status'] = "success";
@@ -412,14 +410,16 @@ if(isset($_POST['booking'])){
             $_SESSION['page'] = "adminhome.php";
         }   
     }?>
-
-                            <form action="" method="post">
-                                <button name="booking" class="btn col-12 my-2 btn-success">
-                                    SHOW BOOKING DETAIL
-                                </button>
-                            </form>
-                            
-                        </div>                       
+                          
+                          <button
+                        id="buttonn"
+                        type="submit"
+                        name="booking"
+                        class="btn col-12 my-2 btn-success"
+                    >
+                    Show Booking
+                    </button>
+</div>                       
             <div class="col-12 row mt-2 p-0 m-0  justify-content-center">
                 <div class="col-12 col-lg-6">
                     <button
@@ -530,8 +530,7 @@ if(isset($_POST['booking'])){
         </div>
         <div class="col-12 col-lg-6 my-4">
                 <?php 
-                    
-          
+                       
                 $sql='SELECT * FROM airport';
                 $statement=$connection->prepare($sql); $statement->execute();
                 $airport=$statement->fetchAll(PDO::FETCH_OBJ);?>
@@ -578,6 +577,65 @@ if(isset($_POST['booking'])){
                         </tbody>
                     </table>
                 </div>
+
+
+                <div
+                    id="pp"
+                    class="w-100 rounded overflow-scroll"
+                    style="height:400px"
+                >
+<?php
+
+
+    $sql="SELECT * FROM booking"; 
+    $statement=$connection->prepare($sql); 
+    $statement->execute();
+   if($bookings=$statement->fetchAll(PDO::FETCH_OBJ)) ?>
+
+                    <table
+                        class="table table-hover table-dark table-responsive table-bordered text-center"
+                    >
+                        <thead>
+                            <tr>
+                                <th>Booking id</th>
+
+                                <th>Route id</th>
+
+                                <th>Amount</th>
+
+                               
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr></tr>
+                            <tr>
+                                <?php
+ 
+                            foreach($bookings as $book): ?>
+                            </tr>
+
+                           
+                            <tr>
+                                <td><?= $book->ID; ?></td>
+                                <td><?= $book->ROUTE_ID; ?></td>
+                                <td><?= $book->Amount; ?></td>
+                                
+                               
+                            </tr>
+                            <?php
+                       
+                         endforeach ?>
+                        </tbody>
+                    </table>
+                </div>
+
+
+
+
+
+
+
+
 
                 <?php 
      
@@ -729,6 +787,21 @@ if(isset($_POST['booking'])){
         $arrival_date=$_POST['arrival_date'];
         $departure_time=$_POST['departure_time'];
         $arrival_time=$_POST['arrival_time'];
+        $status="1";
+
+        $sql='SELECT * FROM route WHERE FLIGHT_ID=:flight_id AND DEPARTURE_AIRPORT_ID=:departure_id AND ARRIVAL_AIRPORT_ID=:arrival_id';
+        $statement=$connection->prepare($sql);
+        $statement->execute([':flight_id'=>$flight_id,':departure_id'=>$departure_id,':arrival_id'=>$arrival_id]);
+        $route_details = $statement->fetch(PDO::FETCH_OBJ);
+        $id=$route_details->ID;
+        
+        if($route_details)                   
+        {
+            echo"<script>Swal.fire({
+                          icon: 'error',
+                         text: 'Route Already exists!',
+                       })</script>";
+        }
        
                 $route_sql='INSERT INTO route(FLIGHT_ID,ARRIVAL_AIRPORT_ID,DEPARTURE_AIRPORT_ID,DEPARTURE_DATE,ARRIVAL_DATE,DEPARTURE_TIME,ARRIVAL_TIME,CREATED_BY,UPDATED_BY,CREATED_AT,UPDATED_AT)VALUES(:FLIGHT_ID,:ARRIVAL_AIRPORT_ID,:DEPARTURE_AIRPORT_ID,:DEPARTURE_DATE,:ARRIVAL_DATE,:DEPARTURE_TIME,:ARRIVAL_TIME,"admin","admin",now(),now())';
                 $statement=$connection->prepare($route_sql);
@@ -738,13 +811,10 @@ if(isset($_POST['booking'])){
                     $_SESSION['status'] = "success";
                     $_SESSION['status_code'] = "success";
                     $_SESSION['message'] = "Route added successfully!";
-                    
-                   
-                   
-            
-                
+   
                 }
              }
+            
 ?>
 
 </div>
@@ -758,11 +828,6 @@ if(isset($_POST['booking'])){
             </div>
         </div>
 
-
-
-    </div>
-    
-</div>
 <?php require 'footer.php'; ?>
 
 

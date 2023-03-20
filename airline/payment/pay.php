@@ -21,8 +21,8 @@
 <link rel="stylesheet" a href="css/style.css" />
 </head>
 <body>
-<div class="container">
-	<div class="row">
+<div class="container-fluid row my-5 justify-content-center">
+	<div class="col-6 ">
 		<div class="col-sm-12 form-container">
 				<h1>Payment</h1>
 <hr>
@@ -35,7 +35,6 @@ use Razorpay\Api\Api;
 $id=4;
 
 $totalprice=$_SESSION['totalprice'];
-
 
 $seat_no=12;
 $passenger_name="TEST";
@@ -128,12 +127,12 @@ $userdata = $stmt->fetch(PDO::FETCH_OBJ);
 
  ?>
  <!-- BOOKING DETAILS -->
-    <div class="row"> 
+    <div class="row "> 
       <div class="col-8 row"> 
           <div class="col">
           <h4>Payer Details</h4>
             <div class="mb-3">
-              <label  class="label">First Name </label>
+              <label  class="label">Name </label>
               
               <?php echo $userdata->FNAME; ?>
             </div>
@@ -148,59 +147,27 @@ $userdata = $stmt->fetch(PDO::FETCH_OBJ);
             </div>
           </div>
           <!-- Booking  details of each passenger-->
-          <!-- <div class="col">
+          <div class="col">
             <h4>Booking details</h4>
           <table class="table">
-            <thead>
-              <tr>
-                  <th>Number</th>
-                  <th>Name</th>
-                  <th>Seat No</th>
-                  <th>Price</th>
-              </tr>  
-            </thead>
+            
             <tbody>
-              <?php for($i=0;$i<$n;$i++){ ?>
-              <tr>
-                  <td><?=$i+1;?></td>
-                  <td><?=$name[$i];?></td>
-                  <td><?=$seat_no[$i];?></td>
-                  <td><?=$amount[$i];?></td>
-              </tr>
-              <?php } ?>
+             
+             
               <tr>
                   <td colspan="3">Total</td>
                   <td><?=$totalprice;?></td>
               </tr>
             </tbody>
           </table>
-          </div> -->
+          </div> 
           <!-- Booking  details of each passenger-->
-
-
       </div>
       <div class="col-4 text-center">
  <!-- BOOKING DETAILS END-->
 
 					<?php 
-					//  $sql="SELECT * from products WHERE pid=:pid"; 
-
-
-
-
-
-
-          //          $stmt = $db->prepare($sql);
-//            $stmt->bindParam(':pid',$pid,PDO::PARAM_INT);
-//             $stmt->execute();
-//            $row=$stmt->fetch();
-//   //      echo '<div class="card" style="width: 18rem;">
-//   // <img class="card-img-top" src="uploads/'.$row['image'].'" alt="Card image cap">
-//   // <div class="card-body">
-//   //   <h5 class="card-title">'.$row['title'].'</h5>
-//   //   <p class="card-text">'.$row['price'].' INR</p>
-// //   </div>
-// // </div>';
+					
 // 				?> 
 				<br>
      

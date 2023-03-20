@@ -4,12 +4,13 @@
 session_start(); 
 $DEPARTURE=$_SESSION['departure'];
 $ARRIVAL=$_SESSION['arrival'];
-
+$id=$_SESSION['uid'];
              
                      $sql = 'SELECT * FROM airport WHERE ID=:id';
                      $statement = $connection->prepare($sql);
                      $statement->execute([':id' => $DEPARTURE]);
                      $depart_name = $statement->fetch(PDO::FETCH_OBJ);
+
                      $sql = 'SELECT * FROM airport WHERE ID=:id';
                      $statement = $connection->prepare($sql);
                      $statement->execute([':id' => $ARRIVAL]);
@@ -20,31 +21,17 @@ $ARRIVAL=$_SESSION['arrival'];
                      $statement->execute([':id' => $DEPARTURE]);
                      $Route=$statement->fetch(PDO::FETCH_OBJ);
 
-
-
-
-
-
-
-
-
-
-
-
-
-    
-    // $sql='SELECT * FROM login_data' ;
-    // $statement = $connection->prepare($sql);
-    // $statement->execute();
-    // $employees=$statement->fetchAll(PDO::FETCH_OBJ);
-
+                     $sql='SELECT * FROM passenger WHERE USER_ID=:id'; 
+                     $statement=$connection->prepare($sql); 
+                     $statement->execute([':id' => $id]);
+                     $pass=$statement->fetch(PDO::FETCH_OBJ);
 
 
 
     // ndnd
     $from =$depart_name->AIRPORT_NAME; 
     $to =$arrival_name->AIRPORT_NAME; 
-    $passenger="SANDEEP SIVAN S";
+    $passenger=$pass->PASSENGER_NAME;
     $date=$Route->DEPARTURE_DATE;
     $flight=$Route->FLIGHT_ID;
     $seat="A45";
@@ -112,8 +99,8 @@ $pdf->Cell(38,10,$arrival,0,1,'L');
 
 
 
-$pdf->Output();
-$pdf->Output('D', 'recipt.pdf');
+// $pdf->Output();
+$pdf->Output('D', 'receipt.pdf');
 ?>
 
 

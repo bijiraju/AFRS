@@ -57,7 +57,17 @@ try {
     $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
 
     $mail->send();
-    echo "<script>'window.location.href=../Ticketbooked.php'</script>";
+
+    
+    $_SESSION['status'] = "Success";
+    $_SESSION['status_code'] = "Success";
+    $_SESSION['message'] = "Email sent";
+    $_SESSION['page'] = "../Ticketbooked.php";
+
+    
+    
 } catch (Exception $e) {
     echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
 }
+?>
+<?php require '../footer.php'; ?>

@@ -1,94 +1,76 @@
-<?php require 'connection.php'; ?>
-<?php require 'header.php'; ?>
-<div
-    class="container-fluid m-0 p1 min-vh-100 row justify-content-center py-5"
->
-    <div class="col-12 container rounded-3 col-sm-10 p2 px-5 mx-5 text-white">
-	<!-- navbar -->
+<?php
+require 'connection.php';
+require 'header.php';
+session_start();
+?>
+
+
+<div class="container-fluid m-0 p1 min-vh-100 row justify-content-center py-5">
+  <div class="col-12 container rounded-3 col-sm-10 p2 px-5 mx-5 text-white">
+    <!-- navbar -->
     <nav class="navbar navbar-expand-lg navbar-light ">
-            <div class="container-fluid p-0 ">
-                <h4 class="text-white">Purple Fly.com</h4>
-                <button
-                    class="navbar-toggler"
-                    type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#navbarSupportedContent"
-                    aria-controls="navbarSupportedContent"
-                    aria-expanded="false"
-                    aria-label="Toggle navigation"
-                >
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div
-                    class="collapse navbar-collapse"
-                    id="navbarSupportedContent"
-                >
-                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                        <li class="nav-item">
-                            <a
-                                class="nav-link active text-white"
-                                aria-current="page"
-                                href="index.php"
-                                >Home</a
-                            >
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link active text-white" href="#"
-                                >About</a
-                            >
-                        </li>
-                        <li class="nav-item">
-                            <a
-                                class="nav-link active text-white"
-                                href="logout.php"
-                                >Login/Signup</a
-                            >
-                        </li>
-                    </ul>                  
-                </div>
-            </div>
-        </nav>
-
-
-
-    <div class=" row   justify-content-center">
-        <!-- div for plane image -->
-        <div class="px-0 col-12 col-lg-6 my-4 my-lg-5 rounded-4 text-center">
-            <img src="images/plane 2.png" class="img-fluid rounded-4 " alt="" />
+      <div class="container-fluid p-0 ">
+        <h4 class="text-white">Purple Fly.com</h4>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link active text-white" aria-current="page" href="index.php">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active text-white" href="#">About</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active text-white" href="logout.php">Login/Signup</a>
+            </li>
+          </ul>
         </div>
-        <!-- div for login -->
-        <div class="col-12 col-lg-4 my-0 my-lg-5 rounded-4  rounded-4 p2">
-        <h3 class="my-4 text-center text-white ">Welcome to Purple Fly.com</h3>
-        <?php if (isset($_POST['log'])) 
-                 {  $email = $_POST['email'];
-                    $password =md5( $_POST['password']);
-                    // selecting data from database
-            $sql = "SELECT * FROM registration WHERE EMAIL = :email";
-            $statement = $connection->prepare($sql);
-            $statement->execute([':email' => $email]); 
-            $user=$statement->fetch(PDO::FETCH_ASSOC); 
-            if ($user !== false)
-            { 
-            $a=$user['ROLE'] ;
-            $u=$user['ID'] ;
-            $p =$user['PASSWORD']; 
-            if ($password == $p) 
-            {            
-            if($a=='USER'){ 
-            session_start(); 
-            $_SESSION["uid"]=$u;
-            $_SESSION["user"]=$email;
-            header("Location:homepage.php"); } 
-            else if($a=='ADMIN'){
-            session_start(); 
-            $_SESSION["user"]=$email;
-            header("Location:adminhome.php");
+      </div>
+    </nav>
+    <!-- navbar end -->
+
+    <div class="row justify-content-center">
+      <!-- div for plane image -->
+      <div class="px-0 col-12 col-lg-6 my-4 my-lg-5 rounded-4 text-center">
+        <img src="images/plane 2.png" class="img-fluid rounded-4 " alt="" />
+      </div>
+      <!-- div for login -->
+      <div class="col-12 col-lg-4 my-0 my-lg-5 rounded-4 p-2">
+        <h3 class="my-4 text-center text-white">Welcome to Purple Fly.com</h3>
+        <?php
+        if (isset($_POST['log'])) {
+          $email = $_POST['email'];
+          $password = md5($_POST['password']);
+          // selecting data from database
+          $sql = "SELECT * FROM registration WHERE EMAIL = :email";
+          $statement = $connection->prepare($sql);
+          $statement->execute([':email' => $email]);
+          $user = $statement->fetch(PDO::FETCH_ASSOC);
+          if ($user !== false) {
+            $a = $user['ROLE'];
+            $u = $user['ID'];
+            $p = $user['PASSWORD'];
+            if ($password == $p) {
+              if ($a == 'USER') {
+               
+                $_SESSION["uid"] = $u;
+                $_SESSION["user"] = $email;
+                echo "<script>window.location.href='homepage.php'</script>";
+              } else if ($a == 'ADMIN') {
+               
+                $_SESSION["user"] = $email;
+                echo "<script>window.location.href='adminhome.php'</script>";
+              }
+            } else {
+              echo "<div class='alert alert-danger'>Invalid password</div>";
             }
+          } else {
+            echo "<div class='alert alert-danger'>Invalid user</div>";
+          }
         }
-            else{ echo "<div class='alert alert-danger'>Invalid password</div>
-            "; } } 
-            else { echo "<div class='alert alert-danger'>Invalid user</div>
-            "; } }?>
+        ?>
             <form action="" method="post">
                 <div class="my-4">
                     <input
@@ -138,10 +120,9 @@
         </div>
     </div>
 </div>
-            </div>
+</div>
 <?php
-//Import PHPMailer classes into the global namespace
-//These must be at the top of your script, not inside a function
+
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
@@ -149,7 +130,9 @@ use PHPMailer\PHPMailer\Exception;
 require 'vendor/autoload.php';
 //Create an instance; passing `true` enables exceptions
 $mail = new PHPMailer(true);
+
 $token = bin2hex(random_bytes(32));
+
 if(isset($_POST['password-reset-token']) && $_POST['email'])
 {
     $email_address = $_POST['email'];
@@ -166,17 +149,10 @@ if(isset($_POST['password-reset-token']) && $_POST['email'])
         $mail->Password   = 'gaycnpamyrhohkbr';                               //SMTP password
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;            //Enable implicit TLS encryption
         $mail->Port       = 465;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
-        //Recipients
-        $mail->setFrom('arfsairline@gmail.com', 'ARFS');
+        
+        $mail->setFrom('arfsairline@gmail.com', 'PurpleFly');
         $mail->addAddress($email_address);     //Add a recipient
-        // $mail->addAddress('ellen@example.com');               //Name is optional
-        // $mail->addReplyTo('info@example.com', 'Information');
-        // $mail->addCC('cc@example.com');
-        // $mail->addBCC('bcc@example.com');
-        //Attachments
-        // $mail->addAttachment('/var/tmp/file.tar.gz');         //Add attachments
-        // $mail->addAttachment('/tmp/image.jpg', 'new.jpg');    //Optional name
-        //Content
+       
         $mail->isHTML(true);                                  //Set email format to HTML
         $mail->Subject = 'password reset';
         $mail->Body    = 'To reset your password, please click the following link:'.$reset_url;

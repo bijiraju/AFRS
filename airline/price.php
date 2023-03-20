@@ -27,11 +27,16 @@ $k=array($fname1,$fname2,$fname3,$fname4);
 $class=array(); 
 $name=array(); $j=0;
 
-for($i=0;$i<3;$i++){ if($c[$i]==0||$c[$i]==1){ $class[$j]=$c[$i];
-  $name[$j]=$k[$i]; $j++; } } 
+for($i=0;$i<3;$i++)
+{ 
+
+if($c[$i]==0||$c[$i]==1)
+{ $class[$j]=$c[$i];
+  $name[$j]=$k[$i]; $j++; 
+} } 
+
 $_SESSION["name"] = $name; 
-$_SESSION["class"] =
-$class; 
+$_SESSION["class"] =$class; 
 $n=count($class);
 
 // echo $n; 
@@ -47,6 +52,7 @@ $bf=$routes->B_FARE;
 $ef=$routes->E_FARE; 
 
 $tot=0;
+
 for($i=0;$i<$n;$i++)
 {  
   if($class[$i]==0)
@@ -68,18 +74,15 @@ $statement=$connection->prepare($sql);
 $statement->execute([':b_seat'=>$b,':e_seat'=>$e,':ROUTE_ID'=>$route]);
 
 
-$sql='INSERT INTO booking(REGISTRATION_ID,ROUTE_ID,STATUS,CREATED_BY) VALUES (:uid,:route_id,0,:user)';
+$sql='INSERT INTO booking(REGISTRATION_ID,ROUTE_ID,AMOUNT,STATUS,CREATED_BY) VALUES (:uid,:route_id,:amt,0,:user)';
 $statement=$connection->prepare($sql);
-if($statement->execute([':uid'=>$u_id,':route_id'=>$route,':user'=>$user])) 
+if($statement->execute([':uid'=>$u_id,':route_id'=>$route,':amt'=>$tot,':user'=>$user])) 
 //updating passenger table 
 
-$sql='INSERT INTO passenger
-(USER_ID,PASSENGER_NAME,ROUTE_ID,CLASS) VALUES (:uid,:name,:route_id,:class)';
+$sql='INSERT INTO passenger(USER_ID,PASSENGER_NAME,BOOKING_ID,ROUTE_ID,CLASS) VALUES (:uid,:name,:b,:route_id,:class)';
 $statement=$connection->prepare($sql);
-if($statement->execute([':name'=>$name[$i],':route_id'=>$route,':uid'=>$u_id,':class'=>$c]))
+if($statement->execute([':name'=>$name[$i],':b'=>0,':route_id'=>$route,':uid'=>$u_id,':class'=>$c]))
 { } } 
-
-
 
 
 } 
@@ -87,9 +90,13 @@ if($statement->execute([':name'=>$name[$i],':route_id'=>$route,':uid'=>$u_id,':c
 if(isset($_POST['submit']))
 
 {
-$fname1=$_POST['fname']; $fname2=$_POST['fname2']; $fname3=$_POST['fname3'];
-$fname4=$_POST['fname4']; $select1=$_POST['select1'];
-$select2=$_POST['select2']; $select3=$_POST['select3'];
+$fname1=$_POST['fname']; 
+$fname2=$_POST['fname2']; 
+$fname3=$_POST['fname3'];
+$fname4=$_POST['fname4']; 
+$select1=$_POST['select1'];
+$select2=$_POST['select2']; 
+$select3=$_POST['select3'];
 $select4=$_POST['select4']; } ?>
 
 
@@ -150,7 +157,7 @@ $select4=$_POST['select4']; } ?>
                     <div class="col-12 col-lg-7">
                         <h3 class="my-4">Pay Total Amount</h3>
                     </div>
-                 <?php   echo $tot; ?>
+                 
                     <h5 class="my-3"><Strong>Payment Details</Strong></h5>
                     <div class="row">
                         <div class="col-7">
@@ -169,7 +176,7 @@ $select4=$_POST['select4']; } ?>
 
                             
                                 <form action="payment/pay.php">
-                                <button class="btn btn-success" name="submit" type="submit">Continue</button>
+                                <button class="btn btn-success my-4" name="submit" type="submit">Continue</button>
                             </form>
                         </div>
                     </div>
