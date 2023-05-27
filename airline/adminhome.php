@@ -5,7 +5,7 @@
 <?php 
  session_start();
 if (!isset($_SESSION["user"])) {
-    echo "<script>window.location.href='index.php'</script>";
+    header("location:i.php");
 }
 else if(isset($_POST['airport_name'])&&($_POST['abbr'])&&($_POST['state_name'])){
   
@@ -401,7 +401,9 @@ if(isset($_POST['booking'])){
     $sql="SELECT * FROM booking"; 
     $statement=$connection->prepare($sql); 
     $statement->execute();
-   if($bookings=$statement->fetchAll(PDO::FETCH_OBJ))  {        
+   if($bookings=$statement->fetchAll(PDO::FETCH_OBJ))  {
+          
+          echo'bookings';
         }  
         else{
             $_SESSION['status'] = "success";
@@ -410,16 +412,14 @@ if(isset($_POST['booking'])){
             $_SESSION['page'] = "adminhome.php";
         }   
     }?>
-                          
-                          <button
-                        id="buttonn"
-                        type="submit"
-                        name="booking"
-                        class="btn col-12 my-2 btn-success"
-                    >
-                    Show Booking
-                    </button>
-</div>                       
+
+                            <form action="" method="post">
+                                <button name="booking" class="btn col-12 my-2 btn-success">
+                                    SHOW BOOKING DETAIL
+                                </button>
+                            </form>
+                            
+                        </div>                       
             <div class="col-12 row mt-2 p-0 m-0  justify-content-center">
                 <div class="col-12 col-lg-6">
                     <button
@@ -462,75 +462,14 @@ if(isset($_POST['booking'])){
                     </button>
                 </div>
             </div>
-            <?php 
- $query='SELECT ID,FLIGHT_NAME FROM flight';
- $stmnt=$connection->prepare($query);
- $stmnt->execute();
- $flights=$stmnt->fetchall(PDO::FETCH_OBJ);
-    ?>
-<?php
-     $sql='SELECT ID,AIRPORT_NAME FROM airport ';
-     $statement=$connection->prepare($sql);
-     $statement->execute();
-     $airports=$statement->fetchAll(PDO::FETCH_OBJ);
 
-   ?>
-    <form action="" method="POST">
-        <div>
-        <select class="form-select my-5 mb-1" name="flight_name">
-				<option value disabled selected>FLIGHT_NAME:</option>
-                <?php foreach($flights as $flight):?>
-				<option value="<?=$flight->ID; ?>" required><?= $flight->FLIGHT_NAME;?></option>		
-                <?php endforeach;?>		
-             </select>
-        </div>
-        <div class="row ">
-            <div class="col-sm">
-            <select class="form-select" name="departure_name">
-				<option value disabled selected>FROM:</option>
-                <?php foreach($airports as $airport):?>
-				<option value="<?= $airport->ID; ?>" required><?= $airport->AIRPORT_NAME;?></option>		
-                <?php endforeach;?>	
-             </select>
-            </div>
-            <div class="col-sm">
-            <select class="form-select" name="arrival_name">
-				<option value disabled selected>TO:</option>
-                <?php foreach($airports as $airport):?>
-				<option value="<?= $airport->ID; ?>" required><?= $airport->AIRPORT_NAME;?></option>		
-                <?php endforeach;?>		
-             </select>
-            </div>
-        </div>
-           <div class="row mb-4">
-                <div class="col-sm">
-                    <label>Departure_date</label>
-                    <input type="date" name="departure_date"   class="form-control">
-                </div>
-                <div class="col-sm">
-                    <label>Arrival_date</label>
-                    <input type="date" name="arrival_date"  class="form-control">
-                </div>
-           </div>
-           <div class="row mb-4">
-            <div class="col-sm">
-                <label>Departure_Time</label>
-                <input type="time" name="departure_time"  class="form-control">
-            </div>
-            <div class="col-sm">
-                <label>Arrival_Time</label>
-                <input type="time" name="arrival_time"  class="form-control">
-            </div>
-       </div>  
-            <input type="submit" name="add_route" value="ADD ROUTE" class="btn btn-info">
-            <input type="btn" name="delete_route" value="DELETE ROUTE" class="btn btn-warning">
-    </form>
            
             </div>
         </div>
         <div class="col-12 col-lg-6 my-4">
                 <?php 
-                       
+                    
+          
                 $sql='SELECT * FROM airport';
                 $statement=$connection->prepare($sql); $statement->execute();
                 $airport=$statement->fetchAll(PDO::FETCH_OBJ);?>
@@ -577,65 +516,6 @@ if(isset($_POST['booking'])){
                         </tbody>
                     </table>
                 </div>
-
-
-                <div
-                    id="pp"
-                    class="w-100 rounded overflow-scroll"
-                    style="height:400px"
-                >
-<?php
-
-
-    $sql="SELECT * FROM booking"; 
-    $statement=$connection->prepare($sql); 
-    $statement->execute();
-   if($bookings=$statement->fetchAll(PDO::FETCH_OBJ)) ?>
-
-                    <table
-                        class="table table-hover table-dark table-responsive table-bordered text-center"
-                    >
-                        <thead>
-                            <tr>
-                                <th>Booking id</th>
-
-                                <th>Route id</th>
-
-                                <th>Amount</th>
-
-                               
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr></tr>
-                            <tr>
-                                <?php
- 
-                            foreach($bookings as $book): ?>
-                            </tr>
-
-                           
-                            <tr>
-                                <td><?= $book->ID; ?></td>
-                                <td><?= $book->ROUTE_ID; ?></td>
-                                <td><?= $book->Amount; ?></td>
-                                
-                               
-                            </tr>
-                            <?php
-                       
-                         endforeach ?>
-                        </tbody>
-                    </table>
-                </div>
-
-
-
-
-
-
-
-
 
                 <?php 
      
@@ -695,6 +575,8 @@ if(isset($_POST['booking'])){
                     style="height: 200px"
                     id="my"
                 >
+                    
+
                     <table
                         class="table table-hover table-dark table-responsive table-bordered text-center"
                     >
@@ -728,6 +610,8 @@ if(isset($_POST['booking'])){
                 <!-- code for routess -->
 
                 <?php 
+     
+                
                 $sql='SELECT * FROM route'; 
                 $statement=$connection->prepare($sql); $statement->execute();
                 $Routes=$statement->fetchAll(PDO::FETCH_OBJ);?>
@@ -737,6 +621,7 @@ if(isset($_POST['booking'])){
                     id="myroute"
                 >
                     
+
                     <table
                         class="table table-hover table-dark table-responsive table-bordered text-center"
                     >
@@ -777,57 +662,17 @@ if(isset($_POST['booking'])){
                         </tbody>
                     </table>
                 </div>
-<!-- closing table -->
-<?php 
-    if(isset($_POST['add_route'])){
-        $flight_id=$_POST['flight_name'];
-        $departure_id=$_POST['departure_name'];
-        $arrival_id=$_POST['arrival_name'];
-        $departure_date=$_POST['departure_date'];
-        $arrival_date=$_POST['arrival_date'];
-        $departure_time=$_POST['departure_time'];
-        $arrival_time=$_POST['arrival_time'];
-        $status="1";
 
-        $sql='SELECT * FROM route WHERE FLIGHT_ID=:flight_id AND DEPARTURE_AIRPORT_ID=:departure_id AND ARRIVAL_AIRPORT_ID=:arrival_id';
-        $statement=$connection->prepare($sql);
-        $statement->execute([':flight_id'=>$flight_id,':departure_id'=>$departure_id,':arrival_id'=>$arrival_id]);
-        $route_details = $statement->fetch(PDO::FETCH_OBJ);
-        $id=$route_details->ID;
-        
-        if($route_details)                   
-        {
-            echo"<script>Swal.fire({
-                          icon: 'error',
-                         text: 'Route Already exists!',
-                       })</script>";
-        }
-       
-                $route_sql='INSERT INTO route(FLIGHT_ID,ARRIVAL_AIRPORT_ID,DEPARTURE_AIRPORT_ID,DEPARTURE_DATE,ARRIVAL_DATE,DEPARTURE_TIME,ARRIVAL_TIME,CREATED_BY,UPDATED_BY,CREATED_AT,UPDATED_AT)VALUES(:FLIGHT_ID,:ARRIVAL_AIRPORT_ID,:DEPARTURE_AIRPORT_ID,:DEPARTURE_DATE,:ARRIVAL_DATE,:DEPARTURE_TIME,:ARRIVAL_TIME,"admin","admin",now(),now())';
-                $statement=$connection->prepare($route_sql);
-                if($statement->execute([':FLIGHT_ID'=>$flight_id,':ARRIVAL_AIRPORT_ID'=>$arrival_id,':DEPARTURE_AIRPORT_ID'=> $departure_id,':DEPARTURE_DATE'=>$departure_date,':ARRIVAL_DATE'=>$arrival_date,':DEPARTURE_TIME'=> $departure_time,':ARRIVAL_TIME'=>$arrival_time])){
-                   
-
-                    $_SESSION['status'] = "success";
-                    $_SESSION['status_code'] = "success";
-                    $_SESSION['message'] = "Route added successfully!";
-   
-                }
-             }
-            
-?>
-
-</div>
-
-
-    
-</div>
+                       
+                    </div>
                 </div>
 
                
             </div>
         </div>
-
+    </div>
+    
+</div>
 <?php require 'footer.php'; ?>
 
 

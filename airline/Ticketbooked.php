@@ -6,10 +6,6 @@
    session_start(); 
    $DEPARTURE=$_SESSION['departure'];
    $ARRIVAL=$_SESSION['arrival'];
-   $ID=$_SESSION['uid'];
-
-   
-
 
                 
                         $sql = 'SELECT * FROM airport WHERE ID=:id';
@@ -24,12 +20,7 @@
                         $sql='SELECT * FROM route WHERE DEPARTURE_AIRPORT_ID=:id'; 
                         $statement=$connection->prepare($sql); 
                         $statement->execute([':id' => $DEPARTURE]);
-                        $Route=$statement->fetch(PDO::FETCH_OBJ);
-
-                        $sql='SELECT * FROM passenger WHERE USER_ID=:id'; 
-                        $statement=$connection->prepare($sql); 
-                        $statement->execute([':id' => $ID]);
-                        $Pass=$statement->fetch(PDO::FETCH_OBJ);?>
+                        $Route=$statement->fetch(PDO::FETCH_OBJ);?>
 
 
 
@@ -103,7 +94,7 @@
                 <div class="col-6 text-center">
                     <div class="my-1">
                         <h5 class="">Passenger</h5>
-                        <h6 class="text-secondary"><?php echo $Pass->$PASSENGER_NAME?></h6>
+                        <h6 class="text-secondary">Anna</h6>
                     </div>
                     <div class="my-1">
                         <h5 class="">Seat No</h5>
@@ -129,9 +120,10 @@
                         <h6 class="text-secondary"><?php echo  $Route->ARRIVAL_TIME ?></h6>
                     </div>
                 </div>
-
                 <a href="fpdf/receipt.php
             " class="btn btn-success col-4 my-3">Print PDF</a> 
+
+                <!-- <button class="btn btn-success col-4 my-3">Print PDF</button> -->
             </div>
         </div>
         <!-- container div closed -->
